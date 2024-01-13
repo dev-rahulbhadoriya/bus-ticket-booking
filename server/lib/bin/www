@@ -1,0 +1,117 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+const http = require("http");
+const debug = require("debug")("parternWebApp-service:server");
+const app = require("../app");
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || "8001");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app);
+// const allowUrl = [
+//     // "http://localhost:3000",
+//     "https://partner.anaxee.com",
+//     "https://optpage.netlify.app",
+//     "https://opportunity.anaxee.com",
+//     "https://project-swarksha.uc.r.appspot.com"
+// ];
+// const io = require('socket.io')(server,
+//     {
+//         cors: {
+//             origin: allowUrl,
+//             methods: ["GET", "POST"]
+//         }
+//     });
+// Handle client-side connections
+// io.on('connection', (socket) => {
+//     console.log(`Client ${socket.id} connected`);
+  
+//     // Send a message to the client
+    
+//     // Handle messages from the client
+//     socket.on('userByEmailV1', (data) => {
+//         // console.log(`Received message from userByEmailV1 API ${socket.id}:>>`, data);
+//         //emit the message to all the clients
+//         io.emit('userByEmailV1Client', data);
+//     });
+  
+//     // Handle disconnections
+//     socket.on('disconnect', () => {
+//       console.log(`Client ${socket.id} disconnected`);
+//     });
+//   });
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+    const iport = parseInt(val, 10);
+
+    if (Number.isNaN(iport)) {
+        // named pipe
+        return val;
+    }
+
+    if (iport >= 0) {
+        // iport number
+        return iport;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+
+    const bind = typeof port === "string" ? `Pipe + ${port}` : `Port ${port}`;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case "EACCES":
+            console.error(`${bind} requires elevated privileges`);
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(`${bind} is already in use`);
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    const addr = server.address();
+    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
+    debug(`Listening on: ${bind}`);
+}
