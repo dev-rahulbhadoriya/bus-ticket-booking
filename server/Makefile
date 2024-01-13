@@ -1,5 +1,7 @@
 default: base
 
+base: node_modules
+
 node_modules: package.json
 	npm install --legacy-peer-deps
 	touch node_modules
