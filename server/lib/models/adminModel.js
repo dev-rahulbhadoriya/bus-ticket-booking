@@ -1,8 +1,8 @@
 const dbquery = require("../helpers/dbquery");
 module.exports = {
 
-    getUsersList: () => {
-        const query = `select id,users_name,employee_name from users`;
+    getAdminList: () => {
+        const query = `select id,users_name,employee_name from admin`;
         return dbquery.executeQuery(query);
     },
    
