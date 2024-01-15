@@ -1,15 +1,8 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
 const http = require("http");
 const debug = require("debug")("parternWebApp-service:server");
-const app = require("../app");
-
-/**
- * Get port from environment and store in Express.
- */
+const app = require("./server");
 
 const port = normalizePort(process.env.PORT || "8001");
 app.set("port", port);
@@ -19,42 +12,6 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
-// const allowUrl = [
-//     // "http://localhost:3000",
-//     "https://partner.anaxee.com",
-//     "https://optpage.netlify.app",
-//     "https://opportunity.anaxee.com",
-//     "https://project-swarksha.uc.r.appspot.com"
-// ];
-// const io = require('socket.io')(server,
-//     {
-//         cors: {
-//             origin: allowUrl,
-//             methods: ["GET", "POST"]
-//         }
-//     });
-// Handle client-side connections
-// io.on('connection', (socket) => {
-//     console.log(`Client ${socket.id} connected`);
-  
-//     // Send a message to the client
-    
-//     // Handle messages from the client
-//     socket.on('userByEmailV1', (data) => {
-//         // console.log(`Received message from userByEmailV1 API ${socket.id}:>>`, data);
-//         //emit the message to all the clients
-//         io.emit('userByEmailV1Client', data);
-//     });
-  
-//     // Handle disconnections
-//     socket.on('disconnect', () => {
-//       console.log(`Client ${socket.id} disconnected`);
-//     });
-//   });
-
-/**
- * Listen on provided port, on all network interfaces.
- */
 
 server.listen(port);
 server.on("error", onError);
@@ -69,7 +26,7 @@ function normalizePort(val) {
 
     if (Number.isNaN(iport)) {
         // named pipe
-        return val;
+        return { path: val };  // Return as an object with the 'path' property
     }
 
     if (iport >= 0) {

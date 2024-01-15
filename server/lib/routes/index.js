@@ -1,19 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const adminRouter = require("../routes/adminRouter")
-const usersRouter = require("../routes/usersRouter");
-const resetRouter = require("../routes/resetRouter");
+const usersRouter = require("../routes/usersRoutes");
+const jwt = require("jsonwebtoken");
+
 
 router.get("/", (req, res) => res.send("Service is running!"));
 
-// admin routers 
-router.use("/admin", adminRouter);
 
 // users routers
-router.use("/users", usersRouter)
+router.use("/user", usersRouter)
 
-//password reset routes for partner Web App
-router.use("/auth", resetRouter)
-
-
+//TODO Ticket routers
 module.exports = router;

@@ -11,16 +11,4 @@ module.exports = {
     SOCKET_PATH: process.env.SOCKET_PATH,
     NODE_ENV: process.env.NODE_ENV,
 
-    MYSQL_HOST_1: process.env.MYSQL_HOST_1,
-    MYSQL_PORT_1: process.env.MYSQL_PORT_1,
-    MYSQL_USER_1: process.env.MYSQL_USER_1,
-    MYSQL_PASSWORD_1: process.env.MYSQL_PASSWORD_1,
-    MYSQL_DATABASE_1: process.env.MYSQL_DATABASE_1,
-
-    MYSQL_HOST_2: process.env.MYSQL_HOST_2,
-    MYSQL_PORT_2: process.env.MYSQL_PORT_2,
-    MYSQL_USER_2: process.env.MYSQL_USER_2,
-    MYSQL_PASSWORD_2: process.env.MYSQL_PASSWORD_2,
-    MYSQL_DATABASE_2: process.env.MYSQL_DATABASE_2,
-    SSL: process.env.SSL,
 };

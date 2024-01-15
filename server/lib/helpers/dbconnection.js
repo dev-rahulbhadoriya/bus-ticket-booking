@@ -2,13 +2,12 @@ const mysql = require("mysql");
 const config = require("../config");
 
 const pool = mysql.createPool({
-  host: "34.93.65.88",
+  host: "localhost",
   port: 3306,
   user: config.MYSQL_USER,
   charset: "utf8mb4_unicode_ci",
   password: config.MYSQL_PASSWORD,
   database: config.MYSQL_DATABASE,
-  socketPath: config.SOCKET_PATH,
   debug: false,
   connectionLimit: 10,
   multipleStatements: true,

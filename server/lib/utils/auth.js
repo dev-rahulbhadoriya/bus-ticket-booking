@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const adminModel = require("../models/adminModel");
 const { successResponse, errorResponse } = require("../utils/responseUtil");
 const axios = require('axios').default;
 
