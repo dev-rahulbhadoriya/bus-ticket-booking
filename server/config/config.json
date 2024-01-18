@@ -1,22 +1,22 @@
 {
   "development": {
     "username": "root",
-    "password": "",
-    "database": "api_db_development",
+    "password": "90iopklbnm",
+    "database": "bus_ticket",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "",
-    "database": "api_db_test",
+    "password": "90iopklbnm",
+    "database": "bus_ticket_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "",
-    "database": "api_db_production",
+    "password": "90iopklbnm",
+    "database": "bus_ticket",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

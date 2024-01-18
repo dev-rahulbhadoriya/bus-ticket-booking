@@ -39,9 +39,6 @@ module.exports = {
       token_expire: {
         type: Sequelize.STRING
       },
-      birthday: {
-        type: Sequelize.DATE
-      },
       role: {
         type: Sequelize.STRING
       },

@@ -25,7 +25,7 @@ module.exports = router;
 
 
 
-/**
+/*
  * @swagger
  * tags:
  *   name: Users

@@ -5,8 +5,8 @@ const optionsV1 = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'My Boilerplate API',
-            description: 'nodejs-express-mysql-api-boilerplate API ',
+            title: 'Node api',
+            description: 'Bus ticket',
             version: '1.0.0',
         },
     },
