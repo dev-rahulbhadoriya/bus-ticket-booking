@@ -23,3 +23,6 @@ warn: Jan-22-2024 21:10:39: Unable to connect to email server. Make sure you hav
 warn: Jan-22-2024 22:56:59: Unable to connect to email server. Make sure you have configured the SMTP options in .env
 warn: Jan-22-2024 22:57:56: Unable to connect to email server. Make sure you have configured the SMTP options in .env
 warn: Jan-22-2024 22:58:27: Unable to connect to email server. Make sure you have configured the SMTP options in .env
+warn: Jan-22-2024 22:59:30: Unable to connect to email server. Make sure you have configured the SMTP options in .env
+warn: Jan-22-2024 23:02:57: Unable to connect to email server. Make sure you have configured the SMTP options in .env
+warn: Jan-22-2024 23:03:02: Unable to connect to email server. Make sure you have configured the SMTP options in .env
