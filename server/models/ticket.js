@@ -1,27 +1,32 @@
 'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class ticket extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+  class Ticket extends Model {
+  static associate(models) {
+    // Define associations here if needed
     }
   }
-  ticket.init({
-    ticketDate: DataTypes.STRING,
-    ticketDetails: DataTypes.STRING,
- // TODO: add more
+
+  Ticket.init({
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM('open', 'closed'),
+      defaultValue: 'open',
+    },
   }, {
     sequelize,
-    modelName: 'ticket',
+    modelName: 'Ticket',
   });
 
- // TODO: ADD more methods to handle the
-  return ticket;
+  return Ticket;
 };
