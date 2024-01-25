@@ -1,32 +1,27 @@
 'use strict';
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Ticket extends Model {
-  static associate(models) {
-    // Define associations here if needed
+  class ticket extends Model {
+    static associate(models) {
     }
   }
 
-  Ticket.init({
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    status: {
-      type: DataTypes.ENUM('open', 'closed'),
-      defaultValue: 'open',
-    },
-  }, {
+  ticket.init({
+    busName: DataTypes.STRING,
+    busNumber: DataTypes.STRING,
+    bearthDetails: DataTypes.STRING,
+    pickupPoint: DataTypes.STRING,
+    dropPoint: DataTypes.STRING,
+    passagerDetails: DataTypes.STRING,
+    status: DataTypes.INTEGER,
+    createdAt: DataTypes.INTEGER,
+    updateAt: DataTypes.STRING,
+    }, {
     sequelize,
-    modelName: 'Ticket',
+    modelName: 'ticket',
   });
 
-  return Ticket;
+
+  return ticket;
 };

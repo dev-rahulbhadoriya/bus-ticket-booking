@@ -14,7 +14,7 @@ const login = catchAsync(async (req, res) => {
             "message": "Invalid credentials",
         });
         return;
-    }
+    } 
     const tokens = await tokenService.generateAuthTokens(user);
     res.send({user, tokens});
 });

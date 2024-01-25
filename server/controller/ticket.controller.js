@@ -1,6 +1,8 @@
 const db = require("../models");
-const Ticket = db.Ticket;
-const createTicket = async (req, res) => {
+const Ticket = db.ticket;
+const catchAsync = require("../utils/catchAsync");
+
+const createTicket = catchAsync(async (req, res) => {
   try {
     const { title, description, status } = req.body;
 
@@ -12,86 +14,86 @@ const createTicket = async (req, res) => {
 
     res.status(201).json(ticket);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-const getTicketById = async (req, res) => {
-  try {
-    const { ticketId } = req.params;
-
-    const ticket = await Ticket.findByPk(ticketId);
-
-    if (!ticket) {
-      return res.status(404).json({ error: 'Ticket not found' });
-    }
-
-    res.json(ticket);
-  } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
   }
-};
+});
 
-const getAllTickets = async (req, res) => {
-  try {
-    const tickets = await Ticket.findAll();
+// const getTicketById = async (req, res) => {
+//   try {
+//     const { ticketId } = req.params;
 
-    res.json(tickets);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+//     const ticket = await Ticket.findByPk(ticketId);
 
-const updateTicket = async (req, res) => {
-  try {
-    const { ticketId } = req.params;
-    const { title, description, status } = req.body;
+//     if (!ticket) {
+//       return res.status(404).json({ error: 'Ticket not found' });
+//     }
 
-    const ticket = await Ticket.findByPk(ticketId);
+//     res.json(ticket);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
 
-    if (!ticket) {
-      return res.status(404).json({ error: 'Ticket not found' });
-    }
+// const getAllTickets = async (req, res) => {
+//   try {
+//     const tickets = await Ticket.findAll();
 
-    await ticket.update({
-      title,
-      description,
-      status,
-    });
+//     res.json(tickets);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
 
-    res.json(ticket);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+// const updateTicket = async (req, res) => {
+//   try {
+//     const { ticketId } = req.params;
+//     const { title, description, status } = req.body;
 
-const deleteTicket = async (req, res) => {
-  try {
-    const { ticketId } = req.params;
+//     const ticket = await Ticket.findByPk(ticketId);
 
-    const ticket = await Ticket.findByPk(ticketId);
+//     if (!ticket) {
+//       return res.status(404).json({ error: 'Ticket not found' });
+//     }
 
-    if (!ticket) {
-      return res.status(404).json({ error: 'Ticket not found' });
-    }
+//     await ticket.update({
+//       title,
+//       description,
+//       status,
+//     });
 
-    await ticket.destroy();
+//     res.json(ticket);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
 
-    res.json({ message: 'Ticket deleted successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+// const deleteTicket = async (req, res) => {
+//   try {
+//     const { ticketId } = req.params;
+
+//     const ticket = await Ticket.findByPk(ticketId);
+
+//     if (!ticket) {
+//       return res.status(404).json({ error: 'Ticket not found' });
+//     }
+
+//     await ticket.destroy();
+
+//     res.json({ message: 'Ticket deleted successfully' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
 
 module.exports = {
   createTicket,
-  getTicketById,
-  getAllTickets,
-  updateTicket,
-  deleteTicket,
+  // getTicketById,
+  // getAllTickets,
+  // updateTicket,
+  // deleteTicket,
 };

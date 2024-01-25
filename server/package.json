@@ -1,7 +1,7 @@
 {
   "name": "",
   "version": "1",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "prepare": "npx sequelize-cli db:create && npx sequelize-cli db:migrate",
     "start:dev": "pm2 start --env dev",
