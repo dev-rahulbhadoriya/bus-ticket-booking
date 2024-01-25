@@ -6,7 +6,6 @@ const routeManager = require('./route/route.manager.js')
 const db = require("./models/index");
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const swaggerDocs = require('./swagger.js')
 const passport = require('passport');
 const { jwtStrategy } = require('./config/passport');
 const helmet = require('helmet');
@@ -34,7 +33,6 @@ app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
 routeManager(app)
-swaggerDocs(app, process.env.PORT)
 
 // error handler
 app.use(function (err, req, res, next) {
