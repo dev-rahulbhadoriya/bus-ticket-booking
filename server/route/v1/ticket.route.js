@@ -3,10 +3,9 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const validate = require('../../middleware/validate');
 
-router
-    .route('/')
-    
-    // TODO: create ticket routes
+
+
+router.post('/tickets', validate(authValidation.login), authController.login);
 
 
 
