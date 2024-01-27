@@ -1,13 +1,13 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Bus extends Model {
+  class bus extends Model {
     static associate(models) {
-      Bus.hasMany(models.Ticket, { foreignKey: 'busId', as: 'tickets' });
+      bus.hasMany(models.Ticket, { foreignKey: 'busId', as: 'tickets' });
     }
   }
 
-  Bus.init({
+  bus.init({
     busNumber: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -28,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Bus',
+    modelName: 'bus',
   });
 
-  return Bus;
+  return bus;
 };

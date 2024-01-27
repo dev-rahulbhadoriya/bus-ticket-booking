@@ -2,14 +2,14 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class user extends Model {
     static associate(models) {
       // Define the association with Ticket model
-      User.hasMany(models.Ticket, { foreignKey: 'userId', as: 'tickets' });
+      user.hasMany(models.ticket, { foreignKey: 'userId', as: 'tickets' });
     }
   }
 
-  User.init({
+  user.init({
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     username: DataTypes.STRING,
@@ -23,11 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
   });
 
-  User.isEmailTaken = async (email, excludeUserId) => {
-    const user = await User.findOne({
+  user.isEmailTaken = async (email, excludeUserId) => {
+    const user = await user.findOne({
       where: {
         email,
         userId: {
@@ -38,9 +38,9 @@ module.exports = (sequelize, DataTypes) => {
     return user;
   }
 
-  User.isPasswordMatch = async (password, hash) => {
+  user.isPasswordMatch = async (password, hash) => {
     return bcrypt.compareSync(password, hash);
   }
 
-  return User;
+  return user;
 };

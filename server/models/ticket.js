@@ -3,13 +3,13 @@ const { Model } = require('sequelize');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
-    class Ticket extends Model {
+    class ticket extends Model {
         static associate(models) {
             // Add any associations if needed
         }
     }
 
-    Ticket.init({
+    ticket.init({
         ticketNumber: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         sequelize,
-        modelName: 'Ticket',
+        modelName: 'ticket',
         hooks: {
             beforeCreate: (ticket) => {
                 ticket.ticketNumber = uuidv4();
@@ -42,5 +42,5 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
-    return Ticket;
+    return ticket;
 };
