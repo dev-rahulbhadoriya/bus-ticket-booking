@@ -13,8 +13,8 @@ const createUser = {
 
 const getUsers = {
   query: Joi.object().keys({
-    firstname: Joi.string().required(),
-    lastname: Joi.string().required(),
+    firstname: Joi.string(),
+    lastname: Joi.string(),
     role: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
@@ -24,7 +24,7 @@ const getUsers = {
 
 const getUser = {
   params: Joi.object().keys({
-    id: Joi.string().custom(objectId),
+    id: Joi.number().integer()
   }),
 };
 

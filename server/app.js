@@ -31,7 +31,6 @@ db.sequelize.sync()
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
-
 routeManager(app)
 
 // error handler
