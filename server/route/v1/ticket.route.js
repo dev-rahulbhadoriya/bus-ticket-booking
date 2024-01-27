@@ -7,7 +7,7 @@ const ticketValidation = require("../../validations/")
 
 router
     .route('/')
-    .post(auth('manageUsers'),validate(ticketValidation.createTicket) ,ticketController.createTicket)
+    .post(auth(''),validate(ticketValidation.createTicket) ,ticketController.createTicket)
 
 
 module.exports = router;

@@ -1,19 +1,15 @@
-'use strict';
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class user extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class User extends Model {
     static associate(models) {
-      // define association here
+      // Define the association with Ticket model
+      User.hasMany(models.Ticket, { foreignKey: 'userId', as: 'tickets' });
     }
   }
-  user.init({
+
+  User.init({
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     username: DataTypes.STRING,
@@ -27,11 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'user',
+    modelName: 'User',
   });
 
-  user.isEmailTaken = async (email, excludeUserId) => {
-    const user = await user.findOne({
+  User.isEmailTaken = async (email, excludeUserId) => {
+    const user = await User.findOne({
       where: {
         email,
         userId: {
@@ -42,8 +38,9 @@ module.exports = (sequelize, DataTypes) => {
     return user;
   }
 
-  user.isPasswordMatch = async (password, hash) => {
+  User.isPasswordMatch = async (password, hash) => {
     return bcrypt.compareSync(password, hash);
   }
-  return user;
+
+  return User;
 };
