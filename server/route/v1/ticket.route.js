@@ -2,14 +2,12 @@ const express = require('express');
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const validate = require('../../middleware/validate');
+const ticketController = require("../../controller/ticket.controller")
+const ticketValidation = require("../../validations/")
 
-
-
-router.post('/tickets', validate(authValidation.login), authController.login);
-
+router
+    .route('/')
+    .post(auth('manageUsers'),validate(ticketValidation.createTicket) ,ticketController.createTicket)
 
 
 module.exports = router;
-
-
-//TODO: swagger 
