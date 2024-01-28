@@ -2,59 +2,39 @@ const db = require("../models");
 const { v4: uuidv4 } = require('uuid');
 const Bus = db.bus
 const Ticket = db.Ticket
-const TicketService = {
-  async bookTickets(busId, userId, numberOfTickets) {
-    try {
-      const bus = await Bus.findByPk(busId);
-      if (!bus) {
-        throw new Error('Bus not found');
-      }
+const bookTickets = async (busId, userId, numberOfTickets)=> {
+  try {
+    const bus = await Bus.findByPk(busId);
+    if (!bus) throw new Error('Bus not found');
 
-      // Check if there are enough available seats
-      const availableUpperSeats = bus.upperSectionSeats - bus.upperSectionBookedSeats;
-      const availableLowerSeats = bus.lowerSectionSeats - bus.lowerSectionBookedSeats;
-      const totalAvailableSeats = availableUpperSeats + availableLowerSeats;
+    const { upperSectionSeats, lowerSectionSeats, upperSectionBookedSeats, lowerSectionBookedSeats } = bus;
+    const totalAvailableSeats = upperSectionSeats - upperSectionBookedSeats + lowerSectionSeats - lowerSectionBookedSeats;
 
-      if (numberOfTickets > totalAvailableSeats) {
-        throw new Error('Not enough available seats');
-      }
+    if (numberOfTickets > totalAvailableSeats) throw new Error('Not enough available seats');
 
-      // Book the tickets
-      const bookedTickets = [];
+    const bookedTickets = [];
 
-      for (let i = 0; i < numberOfTickets; i++) {
-        let section;
-        let seatNumber;
+    for (let i = 0; i < numberOfTickets; i++) {
+      const section = i < upperSectionSeats ? 'upper' : 'lower';
+      const seatNumber = i < upperSectionSeats ? upperSectionBookedSeats + i + 1 : lowerSectionBookedSeats + (i - upperSectionSeats) + 1;
 
-        // Auto-assign seats
-        if (i < availableUpperSeats) {
-          section = 'upper';
-          seatNumber = bus.upperSectionBookedSeats + i + 1;
-        } else {
-          section = 'lower';
-          seatNumber = bus.lowerSectionBookedSeats + (i - availableUpperSeats) + 1;
-        }
+      const ticket = await Ticket.create({
+        busId,
+        userId,
+        section,
+        seatNumber,
+        status: 'open',
+      });
 
-        const ticket = await Ticket.create({
-          busId,
-          userId,
-          section,
-          seatNumber,
-          status: 'open',
-          // Add other ticket details as needed
-        });
-
-        bookedTickets.push(ticket);
-      }
-
-      return bookedTickets;
-    } catch (error) {
-      throw new Error(`Error booking tickets: ${error.message}`);
+      bookedTickets.push(ticket);
     }
-  },
 
-  // Add other ticket-related methods as needed
-};
+    return bookedTickets;
+  } catch (error) {
+    console.error(`Error booking tickets: ${error.message}`);
+    throw new Error('Error booking tickets');
+  }
+  }
 
 const getAllCloseTicket = async (filter, options) => {
   try {
@@ -131,7 +111,7 @@ const deleteTicketById = async (ticketId) => {
 };
 
 module.exports = {
-  TicketService,
+  bookTickets,
   getAllCloseTicket,
   getAllOpenTicket,
   getTicketDetailsByUserId,

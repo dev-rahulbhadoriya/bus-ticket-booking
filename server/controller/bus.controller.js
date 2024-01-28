@@ -1,7 +1,7 @@
 const db = require("../models");
 const Ticket = db.ticket;
 const catchAsync = require("../utils/catchAsync");
-const ticketServices = require("../service/ticket.service")
+const bus = require("../service/ticket.service")
 
 const createTicket = catchAsync(async (req, res) => {
     const ticket = await ticketServices.bookTickets(req.body);
