@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
             primaryKey: true,
         },
         busNumber: DataTypes.STRING,
+        section: {
+            type: DataTypes.STRING(1), // Adjust the size based on your requirements
+            allowNull: false,
+        },
         berthDetails: {
             type: DataTypes.STRING,
             get() {
@@ -61,6 +65,7 @@ module.exports = (sequelize) => {
         hooks: {
             beforeCreate: (ticket) => {
                 ticket.ticketNumber = uuidv4();
+                ticket.section = ticket.berthDetails[0].toUpperCase();
             },
         },
     });

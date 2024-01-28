@@ -3,7 +3,7 @@ const Bus = db.bus
 const Ticket = db.ticket
 const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passengerDetails, status, berthDetails }) => {
   try {
-    if (!userId || !busUniqueId || !pickupPoint || !dropPoint || !passengerDetails || !status) {
+    if (!userId || !busUniqueId || !pickupPoint || !dropPoint || !passengerDetails || !status || !berthDetails) {
       throw new Error('Invalid input parameters');
     }
 
@@ -12,36 +12,34 @@ const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passen
       throw new Error('Bus not found');
     }
 
-    const { upperSectionSeats, lowerSectionSeats, upperSectionBookedSeats, lowerSectionBookedSeats } = bus;
-    const totalAvailableSeats = upperSectionSeats - upperSectionBookedSeats + lowerSectionSeats - lowerSectionBookedSeats;
-
-    const numberOfSeats = passengerDetails.length || berthDetails.length;
-
-    if (numberOfSeats > totalAvailableSeats) {
-      throw new Error('Not enough available seats');
-    }
-
     const bookedTickets = [];
 
-    for (let i = 0; i < numberOfSeats; i++) {
-      const isUpperSection = i < upperSectionSeats;
-      const section = isUpperSection ? 'upper' : 'lower';
-      const seatNumber = isUpperSection ? upperSectionBookedSeats + i + 1 : lowerSectionBookedSeats + (i - upperSectionSeats) + 1;
+    for (let i = 0; i < berthDetails.length; i++) {
+      const section = berthDetails[i][0].toUpperCase();
+      const seatNumber = berthDetails[i].substr(1);
 
       const ticket = await Ticket.create({
-        busId: busUniqueId,
-        busNumber: bus.busNumber,
+        busId: bus.id,
         userId,
         section,
         seatNumber,
         pickupPoint,
         dropPoint,
-        passengerDetails: passengerDetails[i], 
+        passengerDetails: passengerDetails[i],
         status,
         berthDetails: berthDetails[i],
       });
 
       bookedTickets.push(ticket);
+    }
+
+    // Update booked seats
+    if (bookedTickets.length > 0) {
+      if (bookedTickets[0].section === 'U') {
+        await bus.update({ upperSectionBookedSeats: bus.upperSectionBookedSeats + bookedTickets.length });
+      } else {
+        await bus.update({ lowerSectionBookedSeats: bus.lowerSectionBookedSeats + bookedTickets.length });
+      }
     }
 
     return bookedTickets;
