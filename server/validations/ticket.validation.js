@@ -3,13 +3,12 @@ const { objectId } = require('./custom.validation');
 
 const createTicket = {
   body: Joi.object().keys({
-    busName: Joi.string().required(),
-    busNumber: Joi.string().required(),
-    berthDetails: Joi.string().required(),
+    busUniqueId: Joi.string().required(),
+    numberOfSeats: Joi.array().items(Joi.string()).required(),
     pickupPoint: Joi.string().required(),
     dropPoint: Joi.string().required(),
-    passengerDetails: Joi.string().required(),
-    status: Joi.number().integer().required(),
+    passengerDetails: Joi.array().items(Joi.string()).required(),
+    status: Joi.string().valid('open', 'closed').required(),
   }),
 };
 
@@ -21,28 +20,27 @@ const getTickets = {
 
 const getTicket = {
   params: Joi.object().keys({
-    id: Joi.number().integer().required().custom(objectId),
+    id: Joi.string().required().custom(objectId),
   }),
 };
 
 const updateTicket = {
   params: Joi.object().keys({
-    id: Joi.number().integer().required().custom(objectId),
+    id: Joi.string().required().custom(objectId),
   }),
   body: Joi.object().keys({
-    busName: Joi.string(),
-    busNumber: Joi.string(),
-    berthDetails: Joi.string(),
+    busUniqueId: Joi.string(),
+    numberOfSeats: Joi.array().items(Joi.string()),
     pickupPoint: Joi.string(),
     dropPoint: Joi.string(),
-    passengerDetails: Joi.string(),
-    status: Joi.number().integer(),
+    passengerDetails: Joi.array().items(Joi.string()),
+    status: Joi.string().valid('open', 'closed'),
   }).min(1),
 };
 
 const deleteTicket = {
   params: Joi.object().keys({
-    id: Joi.number().integer().required().custom(objectId),
+    id: Joi.string().required().custom(objectId),
   }),
 };
 

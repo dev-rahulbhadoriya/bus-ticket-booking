@@ -1,4 +1,5 @@
 const { Model } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
   class bus extends Model {
@@ -8,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   bus.init({
+    busUniqueId: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     busNumber: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -23,12 +30,25 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 20,
     },
-    busDetaisl: {
+    busDetails: {
       type: DataTypes.STRING,
+    },
+    upperSectionBookedSeats: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    lowerSectionBookedSeats: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
   }, {
     sequelize,
     modelName: 'bus',
+    hooks: {
+      beforeCreate: (bus) => {
+        bus.busUniqueId = uuidv4();
+      },
+    },
   });
 
   return bus;

@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const ticketServices = require("../service/ticket.service")
 
 const createTicket = catchAsync(async (req, res) => {
-    const ticket = await ticketServices.bookTickets(req.body);
+    const ticket = await ticketServices.bookTickets(req.user.id, req.body);
     if (ticket) {
         res.send({ticket});
         return;

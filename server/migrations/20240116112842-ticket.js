@@ -11,15 +11,15 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       ticketNumber: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID, // Change the data type to UUID
         allowNull: false,
         unique: true,
       },
       busNumber: {
         type: Sequelize.STRING,
       },
-      bearthDetails: {
-        type: Sequelize.JSON, 
+      berthDetails: {
+        type: Sequelize.ARRAY(Sequelize.STRING), // Use ARRAY for storing arrays of strings
       },
       pickupPoint: {
         type: Sequelize.STRING,
@@ -27,22 +27,23 @@ module.exports = {
       dropPoint: {
         type: Sequelize.STRING,
       },
-      passagerDetails: {
-        type: Sequelize.JSON, 
+      passengerDetails: {
+        type: Sequelize.ARRAY(Sequelize.STRING), // Use ARRAY for storing arrays of strings
       },
       status: {
-        type: Sequelize.ENUM('open', 'closed'),
+        type: Sequelize.ENUM('open', 'closed'), // Use individual values for ENUM
         defaultValue: 'open',
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.fn('NOW'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.fn('NOW'),
+        onUpdate: Sequelize.fn('NOW'),
       },
     });
   },

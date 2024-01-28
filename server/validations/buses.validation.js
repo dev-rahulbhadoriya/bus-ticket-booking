@@ -3,13 +3,8 @@ const { objectId } = require('./custom.validation');
 
 const createBus = {
   body: Joi.object().keys({
-    busName: Joi.string().required(),
-    busNumber: Joi.string().required(),
-    berthDetails: Joi.string().required(),
-    pickupPoint: Joi.string().required(),
-    dropPoint: Joi.string().required(),
-    passengerDetails: Joi.string().required(),
-    status: Joi.number().integer().required(),
+    busNumber: Joi.string(),
+    busDetails: Joi.string()
   }),
 };
 

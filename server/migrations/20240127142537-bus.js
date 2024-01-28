@@ -10,10 +10,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      busId: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        unique: true,
+      },
       busNumber: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       upperSectionSeats: {
         type: Sequelize.INTEGER,
@@ -36,6 +41,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+    });
+
+    await queryInterface.addConstraint('buses', {
+      fields: ['busId'],
+      type: 'unique',
+      name: 'unique_busId_constraint',
     });
   },
 

@@ -1,10 +1,10 @@
 const db = require("../models");
-const Ticket = db.ticket;
+const Bus = db.bus;
 const catchAsync = require("../utils/catchAsync");
-const bus = require("../service/ticket.service")
+const busServices = require("../service/bus.service")
 
-const createTicket = catchAsync(async (req, res) => {
-    const ticket = await ticketServices.bookTickets(req.body);
+const createBus = catchAsync(async (req, res) => {
+    const ticket = await busServices.createBus(req.body);
     if (ticket) {
         res.send({ticket});
         return;
@@ -13,60 +13,60 @@ const createTicket = catchAsync(async (req, res) => {
         "message": "ticket already exists",
     })
 });
-const getTicketById = catchAsync(async (req, res) => {
-    const { ticketId } = req.params;
+// const getTicketById = catchAsync(async (req, res) => {
+//     const { ticketId } = req.params;
 
-    const ticket = await Ticket.findByPk(ticketId);
+//     const ticket = await Ticket.findByPk(ticketId);
 
-    if (!ticket) {
-        return res.status(404).json({ error: 'Ticket not found' });
-    }
+//     if (!ticket) {
+//         return res.status(404).json({ error: 'Ticket not found' });
+//     }
 
-    res.json(ticket);
-});
+//     res.json(ticket);
+// });
 
-const getAllTickets = catchAsync(async (req, res) => {
-    const tickets = await Ticket.findAll();
-    res.json(tickets);
-});
+// const getAllTickets = catchAsync(async (req, res) => {
+//     const tickets = await Ticket.findAll();
+//     res.json(tickets);
+// });
 
-const updateTicket = catchAsync(async (req, res) => {
-    const { ticketId } = req.params;
-    const { title, description, status } = req.body;
+// const updateTicket = catchAsync(async (req, res) => {
+//     const { ticketId } = req.params;
+//     const { title, description, status } = req.body;
 
-    const ticket = await Ticket.findByPk(ticketId);
+//     const ticket = await Ticket.findByPk(ticketId);
 
-    if (!ticket) {
-        return res.status(404).json({ error: 'Ticket not found' });
-    }
+//     if (!ticket) {
+//         return res.status(404).json({ error: 'Ticket not found' });
+//     }
 
-    await ticket.update({
-        title,
-        description,
-        status,
-    });
+//     await ticket.update({
+//         title,
+//         description,
+//         status,
+//     });
 
-    res.json(ticket);
-});
+//     res.json(ticket);
+// });
 
-const deleteTicket = catchAsync(async (req, res) => {
-    const { ticketId } = req.params;
+// const deleteTicket = catchAsync(async (req, res) => {
+//     const { ticketId } = req.params;
 
-    const ticket = await Ticket.findByPk(ticketId);
+//     const ticket = await Ticket.findByPk(ticketId);
 
-    if (!ticket) {
-        return res.status(404).json({ error: 'Ticket not found' });
-    }
+//     if (!ticket) {
+//         return res.status(404).json({ error: 'Ticket not found' });
+//     }
 
-    await ticket.destroy();
+//     await ticket.destroy();
 
-    res.json({ message: 'Ticket deleted successfully' });
-});
+//     res.json({ message: 'Ticket deleted successfully' });
+// });
 
 module.exports = {
-  createTicket,
-  getTicketById,
-  getAllTickets,
-  updateTicket,
-  deleteTicket,
+    createBus,
+//   getTicketById,
+//   getAllTickets,
+//   updateTicket,
+//   deleteTicket,
 };

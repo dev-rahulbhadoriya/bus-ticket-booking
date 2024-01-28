@@ -1,29 +1,44 @@
 const db = require("../models");
-const { v4: uuidv4 } = require('uuid');
 const Bus = db.bus
-const Ticket = db.Ticket
-const bookTickets = async (busId, userId, numberOfTickets)=> {
+const Ticket = db.ticket
+const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passengerDetails, status, berthDetails }) => {
   try {
-    const bus = await Bus.findByPk(busId);
-    if (!bus) throw new Error('Bus not found');
+    if (!userId || !busUniqueId || !pickupPoint || !dropPoint || !passengerDetails || !status) {
+      throw new Error('Invalid input parameters');
+    }
+
+    const bus = await Bus.findOne({ where: { busUniqueId } });
+    if (!bus) {
+      throw new Error('Bus not found');
+    }
 
     const { upperSectionSeats, lowerSectionSeats, upperSectionBookedSeats, lowerSectionBookedSeats } = bus;
     const totalAvailableSeats = upperSectionSeats - upperSectionBookedSeats + lowerSectionSeats - lowerSectionBookedSeats;
 
-    if (numberOfTickets > totalAvailableSeats) throw new Error('Not enough available seats');
+    const numberOfSeats = passengerDetails.length || berthDetails.length;
+
+    if (numberOfSeats > totalAvailableSeats) {
+      throw new Error('Not enough available seats');
+    }
 
     const bookedTickets = [];
 
-    for (let i = 0; i < numberOfTickets; i++) {
-      const section = i < upperSectionSeats ? 'upper' : 'lower';
-      const seatNumber = i < upperSectionSeats ? upperSectionBookedSeats + i + 1 : lowerSectionBookedSeats + (i - upperSectionSeats) + 1;
+    for (let i = 0; i < numberOfSeats; i++) {
+      const isUpperSection = i < upperSectionSeats;
+      const section = isUpperSection ? 'upper' : 'lower';
+      const seatNumber = isUpperSection ? upperSectionBookedSeats + i + 1 : lowerSectionBookedSeats + (i - upperSectionSeats) + 1;
 
       const ticket = await Ticket.create({
-        busId,
+        busId: busUniqueId,
+        busNumber: bus.busNumber,
         userId,
         section,
         seatNumber,
-        status: 'open',
+        pickupPoint,
+        dropPoint,
+        passengerDetails: passengerDetails[i], 
+        status,
+        berthDetails: berthDetails[i],
       });
 
       bookedTickets.push(ticket);
@@ -34,7 +49,8 @@ const bookTickets = async (busId, userId, numberOfTickets)=> {
     console.error(`Error booking tickets: ${error.message}`);
     throw new Error('Error booking tickets');
   }
-  }
+};
+
 
 const getAllCloseTicket = async (filter, options) => {
   try {

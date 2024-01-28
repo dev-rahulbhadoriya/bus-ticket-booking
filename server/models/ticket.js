@@ -1,25 +1,48 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 const { v4: uuidv4 } = require('uuid');
 
-module.exports = (sequelize, DataTypes) => {
-    class ticket extends Model {
+module.exports = (sequelize) => {
+    class Ticket extends Model {
         static associate(models) {
             // Add any associations if needed
         }
     }
 
-    ticket.init({
+    Ticket.init({
         ticketNumber: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             allowNull: false,
-            unique: true,
+            primaryKey: true,
         },
         busNumber: DataTypes.STRING,
-        bearthDetails: DataTypes.ARRAY(DataTypes.STRING),
+        berthDetails: {
+            type: DataTypes.STRING,
+            get() {
+                // Parse the stringified array when fetching from the database
+                const value = this.getDataValue('berthDetails');
+                return value ? JSON.parse(value) : [];
+            },
+            set(value) {
+                // Stringify the array when saving to the database
+                this.setDataValue('berthDetails', JSON.stringify(value));
+            },
+        },
         pickupPoint: DataTypes.STRING,
         dropPoint: DataTypes.STRING,
-        passagerDetails: DataTypes.ARRAY(DataTypes.STRING),
+        passengerDetails: {
+            type: DataTypes.STRING,
+            get() {
+                // Parse the stringified array when fetching from the database
+                const value = this.getDataValue('passengerDetails');
+                return value ? JSON.parse(value) : [];
+            },
+            set(value) {
+                // Stringify the array when saving to the database
+                this.setDataValue('passengerDetails', JSON.stringify(value));
+            },
+        },
         status: {
             type: DataTypes.ENUM('open', 'closed'),
             defaultValue: 'open',
@@ -42,5 +65,5 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
-    return ticket;
+    return Ticket;
 };
