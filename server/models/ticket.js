@@ -3,13 +3,15 @@ const { Model, DataTypes } = require('sequelize');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize) => {
-    class Ticket extends Model {
+    class ticket extends Model {
         static associate(models) {
             // Add any associations if needed
+            ticket.belongsTo(models.user, { foreignKey: 'userId' });
+
         }
     }
 
-    Ticket.init({
+    ticket.init({
         ticketNumber: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
@@ -70,5 +72,5 @@ module.exports = (sequelize) => {
         },
     });
 
-    return Ticket;
+    return ticket;
 };

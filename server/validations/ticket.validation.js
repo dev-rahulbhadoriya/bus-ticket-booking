@@ -30,7 +30,7 @@ const updateTicket = {
   }),
   body: Joi.object().keys({
     busUniqueId: Joi.string(),
-    numberOfSeats: Joi.array().items(Joi.string()),
+    berthDetails: Joi.array().items(Joi.string()),
     pickupPoint: Joi.string(),
     dropPoint: Joi.string(),
     passengerDetails: Joi.array().items(Joi.string()),

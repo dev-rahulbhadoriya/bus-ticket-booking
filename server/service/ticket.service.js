@@ -1,6 +1,7 @@
 const db = require("../models");
 const Bus = db.bus
 const Ticket = db.ticket
+const User = db.user
 const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passengerDetails, status, berthDetails }) => {
   try {
     if (!userId || !busUniqueId || !pickupPoint || !dropPoint || !passengerDetails || !status || !berthDetails) {
@@ -19,7 +20,8 @@ const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passen
       const seatNumber = berthDetails[i].substr(1);
 
       const ticket = await Ticket.create({
-        busId: bus.id,
+        busId: bus.busUniqueId,
+        busNumber: bus.busNumber,
         userId,
         section,
         seatNumber,
@@ -33,7 +35,6 @@ const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passen
       bookedTickets.push(ticket);
     }
 
-    // Update booked seats
     if (bookedTickets.length > 0) {
       if (bookedTickets[0].section === 'U') {
         await bus.update({ upperSectionBookedSeats: bus.upperSectionBookedSeats + bookedTickets.length });
@@ -48,7 +49,37 @@ const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passen
     throw new Error('Error booking tickets');
   }
 };
+const getAllTickets = async () => {
+    try {
+      const tickets = await Ticket.findAll();
+      return tickets;
+    } catch (error) {
+      console.error('Error getting all tickets:', error);
+      throw new Error('Error getting all tickets');
+    }
+  };
 
+  const getTicketOwnerDetails = async (ticketId) => {
+    try {
+      const ticket = await Ticket.findByPk(ticketId, {
+        include: User, 
+      });
+  
+      if (!ticket) {
+        throw new Error('Ticket not found');
+      }
+  
+      const user = ticket.User; 
+  
+      return {
+        ticket,
+        user,
+      };
+    } catch (error) {
+      console.error(`Error getting details for ticket with ID ${ticketId}:`, error);
+      throw new Error(`Error getting details for ticket with ID ${ticketId}`);
+    }
+  };
 
 const getAllCloseTicket = async (filter, options) => {
   try {
@@ -63,6 +94,7 @@ const getAllCloseTicket = async (filter, options) => {
   }
 };
 
+
 const getAllOpenTicket = async () => {
   try {
     const openTickets = await Ticket.findAll({
@@ -75,23 +107,11 @@ const getAllOpenTicket = async () => {
   }
 };
 
-const getTicketDetailsByUserId = async (userId) => {
-  try {
-    const userTickets = await Ticket.findAll({
-      where: { userId },
-    });
-    return userTickets;
-  } catch (error) {
-    console.error('Error getting user tickets:', error);
-    throw new Error('Error getting user tickets');
-  }
-};
-
 const getTicketStatus = async (ticketId) => {
   try {
     const status = await Ticket.findOne({
       attributes: ['status'],
-      where: { id: ticketId },
+      where: { ticketNumber: ticketId },
     });
     return status;
   } catch (error) {
@@ -124,12 +144,57 @@ const deleteTicketById = async (ticketId) => {
   }
 };
 
+const updateTicketStatus = async (ticketId,data) => {
+  try {
+    const ticket = await Ticket.findByPk(ticketId);
+
+    if (!ticket) {
+      throw new Error('Ticket not found');
+    }
+
+    await ticket.update(data);
+
+    return ticket;
+  } catch (error) {
+    console.error('Error updating ticket status:', error);
+    throw new Error('Error updating ticket status');
+  }
+};
+
+const resetAllBookedTickets = async () => {
+    try {
+      const bookedTickets = await Ticket.findAll({
+        where: { status: 'closed' }, 
+      });
+      for (const ticket of bookedTickets) {
+        await ticket.update({ status: 'open' });
+  
+        const bus = await Bus.findOne({ where: { busUniqueId: ticket.busId } });
+  
+        if (bus) {
+          if (ticket.section === 'U') {
+            await bus.update({ upperSectionBookedSeats: bus.upperSectionBookedSeats - 1 });
+          } else {
+            await bus.update({ lowerSectionBookedSeats: bus.lowerSectionBookedSeats - 1 });
+          }
+        }
+      }
+      return true; 
+    } catch (error) {
+      console.error('Error resetting booked tickets:', error);
+      throw new Error('Error resetting booked tickets');
+    }
+  };
+  
 module.exports = {
   bookTickets,
+  getAllTickets,
+  getTicketOwnerDetails,
   getAllCloseTicket,
   getAllOpenTicket,
-  getTicketDetailsByUserId,
   getTicketStatus,
   updateTicketById,
   deleteTicketById,
+  updateTicketStatus,
+  resetAllBookedTickets
 };
