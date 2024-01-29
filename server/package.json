@@ -4,7 +4,6 @@
   "main": "app.js",
   "scripts": {
     "prepare": "npx sequelize-cli db:create && npx sequelize-cli db:migrate",
-    "start:node": "nodemon app.js",
     "start:dev": "pm2 start --env dev",
     "start:test": "pm2 start --env test",
     "start:prod": "pm2 start --env prod",
