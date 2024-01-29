@@ -6,13 +6,14 @@ const ticketController = require("../../controller/ticket.controller")
 const ticketValidation = require("../../validations")
 
 // Admin Routes
-router.post('/admin/create', auth('manageUsers'), validate(ticketValidation.createTicket), ticketController.createTicket); //done
-router.put('/admin/:ticketId/updateStatus', auth('manageUsers'), ticketController.updateTicketStatus); //done
+router.post('/admin/create', auth('manageUsers'), validate(ticketValidation.createTicket), ticketController.createTicket);
+router.put('/admin/:ticketId/updateStatus', auth('manageUsers'), ticketController.updateTicketStatus);
 router.put('/admin/:ticketId/update', auth('manageUsers'), validate(ticketValidation.updateTicket), ticketController.updateTicket);
 router.delete('/admin/:ticketId/delete', auth('manageUsers'), ticketController.deleteTicket);
-router.get('/admin/getAllTickets', auth('getUsers'), ticketController.getAllOpenTicket); //done
-router.get('/admin/:ticketId/ticketStatus', auth('getUsers'), ticketController.getTicketStatus); //done
-router.get('/admin/:ticketId/userDetails', auth('getUsers'), ticketController.getTicketOwnerDetails); //done
+router.get('/admin/getAllTickets', auth('getUsers'), ticketController.getAllOpenTicket);
+router.get('/admin/:ticketId/ticketStatus', auth('getUsers'), ticketController.getTicketStatus);
+router.get('/admin/:ticketId/userDetails', auth('getUsers'), ticketController.getTicketOwnerDetails);
+router.put('/admin/resetServer', auth('manageUsers'), ticketController.resetAllBookedTickets);
 
 
 // User Routes

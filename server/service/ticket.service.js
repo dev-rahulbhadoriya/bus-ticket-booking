@@ -2,9 +2,9 @@ const db = require("../models");
 const Bus = db.bus
 const Ticket = db.ticket
 const User = db.user
-const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passengerDetails, status, berthDetails }) => {
+const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passengerDetails, berthDetails }) => {
   try {
-    if (!userId || !busUniqueId || !pickupPoint || !dropPoint || !passengerDetails || !status || !berthDetails) {
+    if (!userId || !busUniqueId || !pickupPoint || !dropPoint || !passengerDetails || !berthDetails) {
       throw new Error('Invalid input parameters');
     }
 
@@ -28,7 +28,7 @@ const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passen
         pickupPoint,
         dropPoint,
         passengerDetails: passengerDetails[i],
-        status,
+        status:"closed",
         berthDetails: berthDetails[i],
       });
 
@@ -162,29 +162,32 @@ const updateTicketStatus = async (ticketId,data) => {
 };
 
 const resetAllBookedTickets = async () => {
-    try {
-      const bookedTickets = await Ticket.findAll({
-        where: { status: 'closed' }, 
-      });
-      for (const ticket of bookedTickets) {
-        await ticket.update({ status: 'open' });
-  
-        const bus = await Bus.findOne({ where: { busUniqueId: ticket.busId } });
-  
-        if (bus) {
-          if (ticket.section === 'U') {
-            await bus.update({ upperSectionBookedSeats: bus.upperSectionBookedSeats - 1 });
-          } else {
-            await bus.update({ lowerSectionBookedSeats: bus.lowerSectionBookedSeats - 1 });
-          }
+  try {
+    const bookedTickets = await Ticket.findAll({
+      where: { status: 'closed' }, 
+    });
+
+    for (const ticket of bookedTickets) {
+      const bus = await Bus.findOne({ where: { busUniqueId: ticket.busId } });
+
+      if (bus) {
+        if (ticket.section === 'U') {
+          await bus.update({ upperSectionBookedSeats: bus.upperSectionBookedSeats - 1 });
+        } else {
+          await bus.update({ lowerSectionBookedSeats: bus.lowerSectionBookedSeats - 1 });
         }
       }
-      return true; 
-    } catch (error) {
-      console.error('Error resetting booked tickets:', error);
-      throw new Error('Error resetting booked tickets');
+
+      await ticket.update({ status: 'open' });
     }
-  };
+
+    return true; 
+  } catch (error) {
+    console.error('Error resetting booked tickets:', error);
+    throw new Error('Error resetting booked tickets');
+  }
+};
+
   
 module.exports = {
   bookTickets,

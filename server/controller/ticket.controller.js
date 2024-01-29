@@ -125,7 +125,7 @@ const getTicketOwnerDetails = catchAsync(async (req, res) => {
 });
 
 const resetAllBookedTickets = catchAsync(async (req, res) => {
-    if (!req.user.isAdmin) {
+    if (!req.user.role == "admin") {
       return res.status(httpStatus.FORBIDDEN).json({ error: 'Admin access only' });
     }
   
