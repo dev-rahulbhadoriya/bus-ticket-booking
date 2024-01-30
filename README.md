@@ -18,7 +18,7 @@ Welcome to the Bus Ticket Booking System Node.js and Express service. This servi
 
    ```
    git clone https://github.com/dev-rahulbhadoriya/bus-ticket-booking.git
-   cd bus-ticket-booking
+   cd bus-ticket-booking/server
 
 2. **Install dependencies:**
 
