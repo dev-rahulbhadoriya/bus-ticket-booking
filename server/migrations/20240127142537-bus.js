@@ -4,17 +4,11 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('buses', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      busId: {
+      busUniqueId: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        unique: true,
+        primaryKey: true,
       },
       busNumber: {
         type: Sequelize.STRING,
@@ -33,6 +27,14 @@ module.exports = {
       busDetails: {
         type: Sequelize.STRING,
       },
+      upperSectionBookedSeats: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      lowerSectionBookedSeats: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -44,9 +46,9 @@ module.exports = {
     });
 
     await queryInterface.addConstraint('buses', {
-      fields: ['busId'],
+      fields: ['busUniqueId'],
       type: 'unique',
-      name: 'unique_busId_constraint',
+      name: 'unique_busUniqueId_constraint',
     });
   },
 

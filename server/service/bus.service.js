@@ -3,7 +3,7 @@ const Bus = db.bus;
 
 const createBus = async (params) => {
   const { busNumber, busDetails } = params;
-
+try{
   const bus = {
     busNumber,
     upperSectionSeats: 20,
@@ -21,6 +21,10 @@ const createBus = async (params) => {
   }
 
   return null;
+}catch (error){
+  console.error('Error creating bus:', error);
+  return null;
+}
 };
 
 const updateBus = async (busId, updateParams) => {

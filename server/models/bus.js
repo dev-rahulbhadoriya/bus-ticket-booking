@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     busNumber: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     upperSectionSeats: {
       type: DataTypes.INTEGER,

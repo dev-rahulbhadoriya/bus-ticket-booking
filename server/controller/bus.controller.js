@@ -1,7 +1,7 @@
 const db = require("../models");
-const Bus = db.bus;
 const catchAsync = require("../utils/catchAsync");
 const busServices = require("../service/bus.service")
+const httpStatus = require("http-status");
 
 const createBus = catchAsync(async (req, res) => {
     const ticket = await busServices.createBus(req.body);
