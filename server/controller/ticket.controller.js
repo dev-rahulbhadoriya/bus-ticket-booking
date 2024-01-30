@@ -5,14 +5,16 @@ const ticketServices = require("../service/ticket.service");
 const httpStatus = require("http-status");
 
 const createTicket = catchAsync(async (req, res) => {
+  try {
     const ticket = await ticketServices.bookTickets(req.user.id, req.body);
-    if (ticket) {
-        res.status(httpStatus.CREATED).json({ ticket });
+    res.status(httpStatus.CREATED).json({ ticket });
+  } catch (error) {
+    if (error.message.includes("already booked")) {
+      throw { status: httpStatus.CONFLICT, message: "Ticket already booked" };
     } else {
-        res.status(httpStatus.CONFLICT).json({
-            message: "Ticket already exists",
-        });
+      throw error;
     }
+  }
 });
 
 const getAllTicketsByUserId = catchAsync(async (req, res) => {

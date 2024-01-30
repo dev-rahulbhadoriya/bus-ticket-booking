@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const validate = require('../../middleware/validate');
 const ticketController = require("../../controller/ticket.controller")
-const ticketValidation = require("../../validations")
+const ticketValidation = require("../../validations/ticket.validation")
 
 // Admin Routes
 router.post('/admin/create', auth('manageUsers'), validate(ticketValidation.createTicket), ticketController.createTicket);

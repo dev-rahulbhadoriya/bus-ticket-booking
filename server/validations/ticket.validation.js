@@ -4,11 +4,20 @@ const { objectId } = require('./custom.validation');
 const createTicket = {
   body: Joi.object().keys({
     busUniqueId: Joi.string().required(),
-    numberOfSeats: Joi.array().items(Joi.string()).required(),
+    berthDetails: Joi.array().items(Joi.string().custom((value, helpers) => {
+      if (value.includes(',')) {
+        return helpers.error('any.invalid');
+      }
+      return value;
+    })).required(),
     pickupPoint: Joi.string().required(),
     dropPoint: Joi.string().required(),
-    passengerDetails: Joi.array().items(Joi.string()).required(),
-    status: Joi.string().valid('open', 'closed').required(),
+    passengerDetails:Joi.array().items(Joi.string().custom((value, helpers) => {
+      if (value.includes(',')) {
+        return helpers.error('any.invalid');
+      }
+      return value;
+    })).required(),
   }),
 };
 

@@ -11,15 +11,19 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       ticketNumber: {
-        type: Sequelize.UUID, // Change the data type to UUID
+        type: Sequelize.UUID, 
         allowNull: false,
         unique: true,
       },
       busNumber: {
         type: Sequelize.STRING,
       },
+      section: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
       berthDetails: {
-        type: Sequelize.JSON, // Use ARRAY for storing arrays of strings
+        type: Sequelize.JSON, 
       },
       pickupPoint: {
         type: Sequelize.STRING,
@@ -28,10 +32,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       passengerDetails: {
-        type: Sequelize.JSON, // Use ARRAY for storing arrays of strings
+        type: Sequelize.JSON, 
       },
       status: {
-        type: Sequelize.ENUM('open', 'closed'), // Use individual values for ENUM
+        type: Sequelize.ENUM('open', 'closed'), 
         defaultValue: 'open',
       },
       createdAt: {

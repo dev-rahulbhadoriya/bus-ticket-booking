@@ -2,8 +2,8 @@ const db = require("../models");
 const Bus = db.bus
 const Ticket = db.ticket
 const User = db.user
+
 const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passengerDetails, berthDetails }) => {
-  try {
     if (!userId || !busUniqueId || !pickupPoint || !dropPoint || !passengerDetails || !berthDetails) {
       throw new Error('Invalid input parameters');
     }
@@ -13,26 +13,44 @@ const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passen
       throw new Error('Bus not found');
     }
 
+    if (passengerDetails.length !== berthDetails.length) {
+      throw new Error('Passenger and berthDetails counts should be equal, but they are not.');
+    }
+    
     const bookedTickets = [];
+    
 
     for (let i = 0; i < berthDetails.length; i++) {
-      const section = berthDetails[i][0].toUpperCase();
-      const seatNumber = berthDetails[i].substr(1);
-
-      const ticket = await Ticket.create({
-        busId: bus.busUniqueId,
-        busNumber: bus.busNumber,
-        userId,
-        section,
-        seatNumber,
-        pickupPoint,
-        dropPoint,
-        passengerDetails: passengerDetails[i],
-        status:"closed",
-        berthDetails: berthDetails[i],
+      const section = berthDetails[i][0].toUpperCase().toString();
+      const seatNumber = berthDetails[i];
+      const existingTicket = await Ticket.findAll({
+        attributes: ['berthDetails'],
+        where: {
+          busId: bus.busUniqueId,
+        },
       });
 
-      bookedTickets.push(ticket);
+
+      const isSeatBooked = existingTicket.some(ticket => ticket.berthDetails === berthDetails[i]);
+
+      if (isSeatBooked) {
+        throw new Error(`Seat ${berthDetails[i]} is already booked`);
+      } else {
+        const ticket = await Ticket.create({
+          busId: bus.busUniqueId,
+          busNumber: bus.busNumber,
+          userId,
+          section,
+          seatNumber,
+          pickupPoint,
+          dropPoint,
+          passengerDetails: passengerDetails[i],
+          status: "closed",
+          berthDetails: berthDetails[i],
+        });
+
+        bookedTickets.push(ticket);
+      }
     }
 
     if (bookedTickets.length > 0) {
@@ -44,11 +62,10 @@ const bookTickets = async (userId, { busUniqueId, pickupPoint, dropPoint, passen
     }
 
     return bookedTickets;
-  } catch (error) {
-    console.error(`Error booking tickets: ${error.message}`);
-    throw new Error('Error booking tickets');
-  }
 };
+
+
+
 const getAllTickets = async () => {
     try {
       const tickets = await Ticket.findAll();
