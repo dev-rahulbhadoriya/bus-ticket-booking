@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       berthDetails: {
-        type: Sequelize.ARRAY(Sequelize.STRING), // Use ARRAY for storing arrays of strings
+        type: Sequelize.JSON, // Use ARRAY for storing arrays of strings
       },
       pickupPoint: {
         type: Sequelize.STRING,
@@ -28,7 +28,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       passengerDetails: {
-        type: Sequelize.ARRAY(Sequelize.STRING), // Use ARRAY for storing arrays of strings
+        type: Sequelize.JSON, // Use ARRAY for storing arrays of strings
       },
       status: {
         type: Sequelize.ENUM('open', 'closed'), // Use individual values for ENUM

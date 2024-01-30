@@ -1,11 +1,11 @@
 const db = require("../models");
 const User = db.user;
-const userServices = require("../service/user.service");
+const userService = require("../service/user.service");
 const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 
 const signUp =  catchAsync(async (req, res) => {
-    const user = await userServices.createUser(req.body);
+    const user = await userService.createUser(req.body);
     if (user) {
         res.send({user});
         return;
