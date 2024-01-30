@@ -10,28 +10,31 @@ const createBus = {
 
 const getBuses = {
   query: Joi.object().keys({
-    // Add any filtering parameters you might need
+    busUniqueId: Joi.string(),
+    busNumber: Joi.string(),
+    upperSectionSeats: Joi.number(),
+    lowerSectionSeats: Joi.number(),
+    busDetails: Joi.string(),
+    upperSectionBookedSeats:  Joi.number(),
+    lowerSectionBookedSeats: Joi.number(),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
   }),
 };
-
 const getBus = {
   params: Joi.object().keys({
-    id: Joi.number().integer().required().custom(objectId),
+    busUniqueId: Joi.string().required(),
   }),
 };
 
 const updateBus = {
   params: Joi.object().keys({
-    id: Joi.number().integer().required().custom(objectId),
+    busUniqueId: Joi.string().required(),
   }),
   body: Joi.object().keys({
-    busName: Joi.string(),
     busNumber: Joi.string(),
-    berthDetails: Joi.string(),
-    pickupPoint: Joi.string(),
-    dropPoint: Joi.string(),
-    passengerDetails: Joi.string(),
-    status: Joi.number().integer(),
+    busDetails: Joi.string(),
   }).min(1),
 };
 

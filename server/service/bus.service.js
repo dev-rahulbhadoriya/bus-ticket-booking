@@ -28,8 +28,8 @@ const createBus = async (params) => {
   }
 };
 
-const updateBus = async (busId, updateParams) => {
-  const bus = await Bus.findByPk(busId);
+const updateBus = async (busUniqueId, updateParams) => {
+  const bus = await Bus.findOne(busUniqueId);
 
   if (!bus) {
     return null;
@@ -38,8 +38,8 @@ const updateBus = async (busId, updateParams) => {
   const updatedBus = await bus.update(updateParams);
   return updatedBus;
 };
-const getBusById = async (busId) => {
-  const bus = await Bus.findByPk(busId);
+const getBusById = async (busUniqueId) => {
+  const bus = await Bus.findOne(busUniqueId);
 
   return bus;
 };
