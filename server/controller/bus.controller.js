@@ -1,72 +1,66 @@
 const db = require("../models");
 const catchAsync = require("../utils/catchAsync");
-const busServices = require("../service/bus.service")
+const busServices = require("../service/bus.service");
 const httpStatus = require("http-status");
 
 const createBus = catchAsync(async (req, res) => {
-    const ticket = await busServices.createBus(req.body);
-    if (ticket) {
-        res.send({ticket});
-        return;
+    const bus = await busServices.createBus(req.body);
+
+    if (bus) {
+        res.json({ bus });
+    } else {
+        res.status(httpStatus.CONFLICT).json({
+            message: "Bus already exists",
+        });
     }
-    res.status(httpStatus.CONFLICT).send({
-        "message": "ticket already exists",
-    })
 });
-// const getTicketById = catchAsync(async (req, res) => {
-//     const { ticketId } = req.params;
 
-//     const ticket = await Ticket.findByPk(ticketId);
+const getBusById = catchAsync(async (req, res) => {
+    const { busId } = req.params;
 
-//     if (!ticket) {
-//         return res.status(404).json({ error: 'Ticket not found' });
-//     }
+    const bus = await busServices.getBusById(busId);
 
-//     res.json(ticket);
-// });
+    if (!bus) {
+        return res.status(404).json({ error: 'Bus not found' });
+    }
 
-// const getAllTickets = catchAsync(async (req, res) => {
-//     const tickets = await Ticket.findAll();
-//     res.json(tickets);
-// });
+    res.json(bus);
+});
 
-// const updateTicket = catchAsync(async (req, res) => {
-//     const { ticketId } = req.params;
-//     const { title, description, status } = req.body;
+const getAllBuses = catchAsync(async (req, res) => {
+    const buses = await busServices.getAllBuses();
+    res.json(buses);
+});
 
-//     const ticket = await Ticket.findByPk(ticketId);
+const updateBus = catchAsync(async (req, res) => {
+    const { busId } = req.params;
+    const updateParams = req.body;
 
-//     if (!ticket) {
-//         return res.status(404).json({ error: 'Ticket not found' });
-//     }
+    const updatedBus = await busServices.updateBus(busId, updateParams);
 
-//     await ticket.update({
-//         title,
-//         description,
-//         status,
-//     });
+    if (!updatedBus) {
+        return res.status(404).json({ error: 'Bus not found' });
+    }
 
-//     res.json(ticket);
-// });
+    res.json(updatedBus);
+});
 
-// const deleteTicket = catchAsync(async (req, res) => {
-//     const { ticketId } = req.params;
+const deleteBus = catchAsync(async (req, res) => {
+    const { busId } = req.params;
 
-//     const ticket = await Ticket.findByPk(ticketId);
+    const deletedBus = await busServices.deleteBus(busId);
 
-//     if (!ticket) {
-//         return res.status(404).json({ error: 'Ticket not found' });
-//     }
+    if (!deletedBus) {
+        return res.status(404).json({ error: 'Bus not found' });
+    }
 
-//     await ticket.destroy();
-
-//     res.json({ message: 'Ticket deleted successfully' });
-// });
+    res.json({ message: 'Bus deleted successfully' });
+});
 
 module.exports = {
     createBus,
-//   getTicketById,
-//   getAllTickets,
-//   updateTicket,
-//   deleteTicket,
+    getBusById,
+    getAllBuses,
+    updateBus,
+    deleteBus,
 };
