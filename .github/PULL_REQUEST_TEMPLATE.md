@@ -1,18 +1,52 @@
-Closes #
+## What does this PR do?
 
-<!-- 
-Thank you for contributing this Nodejs Project!
+<!-- Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change. -->
+
+Fixes # (issue)
+
+<!-- Please provide a loom video for visual changes to speed up reviews
+ Loom Video: https://www.loom.com/
 -->
 
-#### What has been done to verify that this works as intended?
+## Requirement/Documentation
 
-#### Why is this the best possible solution? Were any other approaches considered?
+<!-- Please provide all documents that are important to understand the reason of that PR. -->
 
-#### How does this change affect users? Describe intentional changes to behavior and behavior that could have accidentally been affected by code changes. In other words, what are the regression risks?
+- If there is a requirement document, please, share it here.
+- If there is ab UI/UX design document, please, share it here.
 
-#### Does this change require updates to the API documentation? If so, please update docs/api.md as part of this PR.
+## Type of change
 
-#### Before submitting this PR, please make sure you have:
+<!-- Please delete bullets that are not relevant. -->
 
-- [ ] run `make test-full` and confirmed all checks still pass OR confirm CircleCI build passes
-- [ ] verified that any code from external sources are properly credited in comments or that everything is internally sourced
+- Bug fix (non-breaking change which fixes an issue)
+- Chore (refactoring code, technical debt, workflow improvements)
+- New feature (non-breaking change which adds functionality)
+- Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- Tests (Unit/Integration/E2E or any other test)
+- This change requires a documentation update
+
+## How should this be tested?
+
+<!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. Write details that help to start the tests -->
+
+- Are there environment variables that should be set?
+- What are the minimal test data to have?
+- What is expected (happy path) to have (input and output)?
+- Any other important info that could help to test that PR
+
+## Mandatory Tasks
+
+- [ ] Make sure you have self-reviewed the code. A decent size PR without self-review might be rejected.
+
+## Checklist
+
+<!-- Remove bullet points below that don't apply to you -->
+
+- I haven't read the [contributing guide](https://github.com/calcom/cal.com/blob/main/CONTRIBUTING.md)
+- My code doesn't follow the style guidelines of this project
+- I haven't commented my code, particularly in hard-to-understand areas
+- I haven't checked if my PR needs changes to the documentation
+- I haven't checked if my changes generate no new warnings
+- I haven't added tests that prove my fix is effective or that my feature works
+- I haven't checked if new and existing unit tests pass locally with my changes
