@@ -39,14 +39,7 @@ Fixes # (issue)
 
 - [ ] Make sure you have self-reviewed the code. A decent size PR without self-review might be rejected.
 
-## Checklist
+## Before submitting this PR, please make sure you have:
 
-<!-- Remove bullet points below that don't apply to you -->
-
-- I haven't read the [contributing guide](https://github.com/calcom/cal.com/blob/main/CONTRIBUTING.md)
-- My code doesn't follow the style guidelines of this project
-- I haven't commented my code, particularly in hard-to-understand areas
-- I haven't checked if my PR needs changes to the documentation
-- I haven't checked if my changes generate no new warnings
-- I haven't added tests that prove my fix is effective or that my feature works
-- I haven't checked if new and existing unit tests pass locally with my changes
+- [ ] run `make test-full` and confirmed all checks still pass OR confirm CircleCI build passes
+- [ ] verified that any code from external sources are properly credited in comments or that everything is internally sourced
